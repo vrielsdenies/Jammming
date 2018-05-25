@@ -11,11 +11,13 @@ class Track extends React.Component {
     this.props.onAdd(this.props.track);
   }
 
+  removeTrack() {}
+
   renderAction() {
     if (Track.isRemoval === true) {
-      return "-";
+      return <a onClick={this.removeTrack()}>-</a>;
     } else {
-      return "+";
+      return <a onClick={this.addTrack()}>+</a>;
     }
   }
 
@@ -23,12 +25,12 @@ class Track extends React.Component {
     return (
       <div className="Track">
         <div className="Track-information">
-          <h3>Sjalalie Sjalala</h3>
-          <p>Sieneke | Best of</p>
+          <h3>{this.props.track.name}</h3>
+          <p>
+            {this.props.track.artist} | {this.props.track.album}
+          </p>
         </div>
-        <a className="Track-action" onClick={this.addTrack}>
-          {this.renderAction()}
-        </a>
+        {this.renderAction()}
       </div>
     );
   }
