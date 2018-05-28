@@ -13,6 +13,7 @@ class TrackList extends React.Component {
               track={track}
               key={track.id}
               onAdd={this.props.onAdd}
+              onRemove={this.props.onRemove}
               isRemoval={this.props.isRemoval}
             />
           );
@@ -20,7 +21,7 @@ class TrackList extends React.Component {
       </div>
     );
 
-    {
+    /*  {
       this.props.track.name;
     }
     {
@@ -28,7 +29,7 @@ class TrackList extends React.Component {
     }
     {
       this.props.track.album;
-    }
+    }*/
   }
 }
 
