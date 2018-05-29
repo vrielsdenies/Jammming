@@ -51,14 +51,13 @@ const Spotify = {
     if (playlistName && trackURIs) {
       const accessToken = Spotify.getAccessToken();
       console.log(playlistName);
-      const header = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+      const headers = {
+        Authorization: `Bearer ${accessToken}` //changed the headers variable
       };
+
       let userID = "";
 
-      return fetch(`https://api.spotify.com/v1/me`, header)
+      return fetch(`https://api.spotify.com/v1/me`, headers)
         .then(response => {
           return response.json();
         })
@@ -70,12 +69,10 @@ const Spotify = {
         .then(jsonResponse => {
           return fetch(
             `https://api.spotify.com/v1/users/${userID}/playlists`,
-            header,
+            headers,
             {
               method: "POST",
-              body: {
-                name: playlistName
-              }
+              body: JSON.stringify({ name: playlistName })
             }
           );
         })
@@ -84,7 +81,7 @@ const Spotify = {
         })
         .then(jsonResponse => {
           console.log(jsonResponse);
-          console.log(jsonResponse.items.id);
+          //console.log(jsonResponse.items.id);
           let playlistID = jsonResponse.id;
           console.log(`this is playlistID ${playlistID}`);
         });
