@@ -57,7 +57,9 @@ const Spotify = {
 
       let userID = "";
 
-      return fetch(`https://api.spotify.com/v1/me`, headers)
+      return fetch(`https://api.spotify.com/v1/me`, {
+        headers: headers
+      })
         .then(response => {
           return response.json();
         })
@@ -65,14 +67,28 @@ const Spotify = {
           userID = jsonResponse.id;
           console.log(jsonResponse);
           console.log(`userID is ${userID}`);
+
+          return fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+            headers: headers,
+            method: "POST",
+            body: JSON.stringify({ name: playlistName })
+          });
+        })
+        .then(response => {
+          return response.json();
         })
         .then(jsonResponse => {
+          //console.log(jsonResponse);
+          //console.log(jsonResponse.items.id);
+          let playlistID = jsonResponse.id;
+          console.log(`this is playlistID ${playlistID}`);
+
           return fetch(
-            `https://api.spotify.com/v1/users/${userID}/playlists`,
-            headers,
+            `https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`,
             {
+              headers: headers,
               method: "POST",
-              body: JSON.stringify({ name: playlistName })
+              body: JSON.stringify({ uris: [trackURIs] })
             }
           );
         })
@@ -80,10 +96,7 @@ const Spotify = {
           return response.json();
         })
         .then(jsonResponse => {
-          console.log(jsonResponse);
-          //console.log(jsonResponse.items.id);
           let playlistID = jsonResponse.id;
-          console.log(`this is playlistID ${playlistID}`);
         });
     } else {
       return;
