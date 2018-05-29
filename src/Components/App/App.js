@@ -11,41 +11,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: [
-        {
-          name: "Everything Now",
-          artist: "Arcade Fire",
-          album: "The Suburbs",
-          id: "af1"
-        },
-        {
-          name: "The Suburbs",
-          artist: "Arcade Fire",
-          album: "The Suburbs",
-          id: "af2"
-        }
-      ],
-      playlistName: "Test Playlist",
-      playlistTracks: [
-        {
-          name: "Glycorine",
-          artist: "Bush",
-          album: "Sixteen Stone",
-          id: "bush01"
-        },
-        {
-          name: "Karma Police",
-          artist: "Radiohead",
-          album: "OK Computer",
-          id: "radiohead01"
-        },
-        {
-          name: "Burn the witch",
-          artist: "Radiohead",
-          album: "New album",
-          id: "radiohead02"
-        }
-      ]
+      searchResults: [],
+      playlistName: "",
+      playlistTracks: []
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
@@ -58,7 +26,7 @@ class App extends Component {
     if (
       this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)
     ) {
-      console.log("track already in playlist");
+      alert("Track already in playlist");
       return;
     } else {
       const currentTrackList = this.state.playlistTracks;
@@ -90,11 +58,16 @@ class App extends Component {
     console.log("updatePlaylistName is called");
   }
 
-  savePlaylist() {
+  savePlaylist(playlistName) {
+    console.log("savePlaylist is called");
     const trackURIs = this.state.playlistTracks.map(trackURI => {
       return this.state.playlistTracks.uri;
     });
-    console.log("playlist is saved");
+
+    Spotify.savePlaylist(playlistName, trackURIs);
+    this.setState({
+      playlistName: playlistName
+    });
   }
 
   search(term) {
@@ -103,7 +76,7 @@ class App extends Component {
         searchResults: tracks
       });
     });
-    console.log(term);
+    console.log(`This is the search term: ${term}`);
   }
 
   render() {
