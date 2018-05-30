@@ -48,14 +48,14 @@ const Spotify = {
 
   savePlaylist(playlistName, trackURIs) {
     console.log("savePLaylist in Spotify.js is called");
+    console.log(trackURIs);
+
     if (playlistName && trackURIs) {
       const accessToken = Spotify.getAccessToken();
-      console.log(playlistName);
       const headers = {
         Authorization: `Bearer ${accessToken}` //changed the headers variable
       };
-
-      let userID = "";
+      let userId = "";
 
       return fetch(`https://api.spotify.com/v1/me`, {
         headers: headers
@@ -64,11 +64,11 @@ const Spotify = {
           return response.json();
         })
         .then(jsonResponse => {
-          userID = jsonResponse.id;
+          userId = jsonResponse.id;
           console.log(jsonResponse);
-          console.log(`userID is ${userID}`);
+          console.log(`userId is ${userId}`);
 
-          return fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+          return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
             headers: headers,
             method: "POST",
             body: JSON.stringify({ name: playlistName })
@@ -80,23 +80,17 @@ const Spotify = {
         .then(jsonResponse => {
           //console.log(jsonResponse);
           //console.log(jsonResponse.items.id);
-          let playlistID = jsonResponse.id;
-          console.log(`this is playlistID ${playlistID}`);
+          let playlistId = jsonResponse.id;
+          console.log(`this is playlistId ${playlistId}`);
 
           return fetch(
-            `https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`,
+            `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
             {
               headers: headers,
               method: "POST",
               body: JSON.stringify({ uris: [trackURIs] })
             }
           );
-        })
-        .then(response => {
-          return response.json();
-        })
-        .then(jsonResponse => {
-          let playlistID = jsonResponse.id;
         });
     } else {
       return;
