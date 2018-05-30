@@ -20,16 +20,6 @@ class TrackList extends React.Component {
         })}
       </div>
     );
-
-    /*  {
-      this.props.track.name;
-    }
-    {
-      this.props.track.artist;
-    }
-    {
-      this.props.track.album;
-    }*/
   }
 }
 
