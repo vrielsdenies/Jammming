@@ -12,7 +12,7 @@ class App extends Component {
     super(props);
     this.state = {
       searchResults: [],
-      playlistName: "",
+      playlistName: "New Playlist",
       playlistTracks: []
     };
     this.addTrack = this.addTrack.bind(this);
@@ -58,17 +58,15 @@ class App extends Component {
     console.log("updatePlaylistName is called");
   }
 
-  savePlaylist(playlistName) {
-    console.log("savePlaylist is called");
-    const trackURIs = this.state.playlistTracks.map(trackURI => {
-      return this.state.playlistTracks.uri;
+  savePlaylist() {
+    const trackUris = this.state.playlistTracks.map(track => track.URI);
+    Spotify.savePlaylist(this.state.playlistName, trackUris).then(() => {
+      this.setState({
+        playlistName: "New playlist",
+        playlistTracks: []
+      });
+      console.log("reset playlist name and empty playlist tracks");
     });
-    Spotify.savePlaylist(playlistName, trackURIs);
-    this.setState({
-      playlistName: "New Playlist",
-      playlistTracks: []
-    });
-    console.log("reset playlist name and empty playlist tracks");
   }
 
   search(term) {
