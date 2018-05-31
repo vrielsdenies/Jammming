@@ -46,14 +46,14 @@ const Spotify = {
       });
   },
 
-  savePlaylist(playlistName, trackURIs) {
+  savePlaylist(playlistName, trackUris) {
     console.log("savePLaylist in Spotify.js is called");
-    console.log(trackURIs);
-
-    if (playlistName && trackURIs) {
+    console.log(`Playlist Name: ${playlistName}`);
+    console.log(`Track URIs: ${trackUris}`);
+    if (playlistName && trackUris) {
       const accessToken = Spotify.getAccessToken();
       const headers = {
-        Authorization: `Bearer ${accessToken}` //changed the headers variable
+        Authorization: `Bearer ${accessToken}`
       };
       let userId = "";
 
@@ -88,7 +88,7 @@ const Spotify = {
             {
               headers: headers,
               method: "POST",
-              body: JSON.stringify({ uris: [trackURIs] })
+              body: JSON.stringify({ uris: trackUris })
             }
           );
         });
